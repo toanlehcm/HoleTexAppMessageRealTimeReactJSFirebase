@@ -20,7 +20,7 @@ function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (userDataLogin) => {
       if (userDataLogin) {
         const { displayName, email, uid, photoURL } = userDataLogin;
-        setUserData(displayName, email, uid, photoURL);
+        setUserData({ displayName, email, uid, photoURL });
         setIsLoading(false);
         navigate('/');
         return;

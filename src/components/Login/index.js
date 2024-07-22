@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { Row, Col, Typography, Button } from 'antd'
-import firebaseApp, { auth } from '../../Firebase/config'
+import { auth } from '../../Firebase/config'
 import { FacebookAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 
 const { Title } = Typography
 
@@ -9,6 +10,8 @@ const fbProvider = new FacebookAuthProvider();
 fbProvider.addScope('email');
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const handleFBLogin = async () => {
     try {
       const result = await signInWithPopup(auth, fbProvider);
@@ -32,6 +35,7 @@ export default function Login() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log('user', user);
+        navigate('/');
       }
     });
 

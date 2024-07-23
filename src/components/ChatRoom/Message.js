@@ -38,10 +38,7 @@ function Message({ text, displayName, createAt, photoURL }) {
   return (
     <WrapperStyled>
       <div>
-        <Avatar src={photoURL} size='small' >
-          {photoURL ? '' : displayName?.charAt(0).toUpperCase()}
-        </Avatar>
-
+        <Avatar src={photoURL} size='small' >{photoURL ? '' : displayName?.charAt(0).toUpperCase()}</Avatar>
         <Typography.Text className='author'>{displayName}</Typography.Text>
         <Typography.Text className='date'>{formatDate(createAt?.seconds)}</Typography.Text>
       </div>

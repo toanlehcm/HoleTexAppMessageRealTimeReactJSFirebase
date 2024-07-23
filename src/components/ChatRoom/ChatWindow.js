@@ -164,7 +164,7 @@ function ChatWindow() {
           message='Hãy chọn phòng'
           type='info'
           showIcon
-          style={{ margin: 5 }}
+          style={{ margin: '0px 5px 5px 5px' }}
           closeable
         />
       )}

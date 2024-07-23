@@ -72,7 +72,7 @@ const FormStyled = styled(Form)`
 
 function ChatWindow() {
   const { selectedRoom, members, setIsInviteMemberVisible } = useContext(AppContext);
-  const { userData: { uid, photoUrl, displayName } } = useContext(AuthContext)
+  const { userData: { uid, photoURL, displayName } } = useContext(AuthContext)
   const [inputValue, setInputValue] = React.useState('')
   const [form] = Form.useForm();
   const inputRef = useRef(null);
@@ -83,7 +83,7 @@ function ChatWindow() {
   }
 
   const handleOnSubmit = () => {
-    addDocument('message', { text: inputValue, uid, photoUrl, roomId: selectedRoom.id, displayName });
+    addDocument('message', { text: inputValue, uid, photoURL, roomId: selectedRoom.id, displayName });
 
     form.resetFields(['message']);
 

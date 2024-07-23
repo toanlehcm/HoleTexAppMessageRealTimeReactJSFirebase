@@ -5,7 +5,7 @@ import { Form, Modal, Input } from 'antd';
 import { addDocument } from '../Firebase/services';
 
 function AddRoomModal(props) {
-  const { isAddRoomVisibale, setIsAddRoomVisible } = useContext(AppContext);
+  const { isAddRoomVisible, setIsAddRoomVisible } = useContext(AppContext);
   const { userData: { uid } } = useContext(AuthContext)
   const [form] = Form.useForm();
 
@@ -30,7 +30,7 @@ function AddRoomModal(props) {
     <div>
       <Modal
         title='Tạo phòng'
-        vidible={isAddRoomVisibale}
+        visible={isAddRoomVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >

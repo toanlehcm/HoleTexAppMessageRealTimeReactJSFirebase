@@ -4,6 +4,7 @@ import Login from './components/Login';
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import AuthProvider from './Context/AuthProvider';
 import AppProvider from './Context/AppProvider';
+import AddRoomModal from './Modals/AddRoomModal';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/' element={<Chatroom />} />
           </Routes>
+          <AddRoomModal />
         </AppProvider>
       </AuthProvider>
     </BrowserRouter>

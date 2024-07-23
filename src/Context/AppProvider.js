@@ -27,7 +27,7 @@ function AppProvider({ children }) {
     return {
       fieldName: 'uid',
       operator: 'in',
-      compareValue: selectedRoom.members
+      compareValue: selectedRoom.members,
     }
   }, [selectedRoom.members]);
 

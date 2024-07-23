@@ -6,8 +6,10 @@ function useFirestore(collectionName, condition) {
   const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
-    let collectionRef = collection(db, collectionName);
-    let queryWhere;
+    let collectionRef = query(
+      collection(db, collectionName),
+      orderBy('createdAt')
+    );
 
     if (condition) {
       if (!condition.compareValue || !condition.compareValue.length) {
@@ -16,16 +18,11 @@ function useFirestore(collectionName, condition) {
         return;
       }
 
-      queryWhere = query(
+      collectionRef = query(
         collectionRef,
         where(condition.fieldName, condition.operator, condition.compareValue),
-        orderBy('createAt')
       );
-    } else {
-      queryWhere = query(collectionRef, orderBy('createAt'));
     }
-
-    const querySnapshot = getDocs(queryWhere);
 
     // Set up the listener
     const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
@@ -33,10 +30,6 @@ function useFirestore(collectionName, condition) {
         ...doc.data(),
         id: doc.id,
       }));
-
-      // console.log('snapshot', snapshot);
-      // console.log('snapshot.docs', snapshot.docs);
-      // console.log('documents', documents);
 
       setDocuments(documents);
     });

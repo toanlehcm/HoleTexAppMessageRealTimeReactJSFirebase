@@ -2,7 +2,7 @@ import { Avatar, Form, Modal, Select, Spin } from 'antd';
 import { debounce } from 'lodash';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { db } from '../Firebase/config';
-import { getFirestore, collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, where, orderBy, limit, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { AppContext } from '../Context/AppProvider';
 
 function DebounceSelect({
@@ -91,13 +91,24 @@ function InviteMemberModal(props) {
     setValue([]);
 
     // update members in current room
-    const roomRef = collection(db, 'rooms').doc(selectedRoomId);
+    // const roomRef = collection(db, 'rooms').doc(selectedRoomId);
+    const roomRef = doc(collection(db, 'rooms'), selectedRoomId);
 
-    roomRef.update({
-      members: [...selectedRoom.members, ...value.map((val) => val.value)],
-    });
+    // roomRef.update({
+    //   members: [...selectedRoom.members, ...value.map((val) => val.value)],
+    // });
 
-    setIsInviteMemberVisible(false);
+    // setIsInviteMemberVisible(false);
+
+    try {
+      updateDoc(roomRef, {
+        members: [...selectedRoom.members, ...value.map((val) => val.value)],
+      });
+
+      setIsInviteMemberVisible(false);
+    } catch (error) {
+      console.error("Error updating document: ", error);
+    }
   };
 
   const handleCancel = () => {

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../Firebase/config';
 import { query, collection, orderBy, where, onSnapshot } from "firebase/firestore";
 
-function useFirestore(collectionString, condition) {
+function useFirestore(collectionName, condition) {
   const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
-    let collectionRef = query(collection(db, collectionString), orderBy('createAt'));
+    let collectionRef = query(collection(db, collectionName), orderBy('createAt'));
 
     if (condition) {
       if (!condition.compareValue || !condition.compareValue.length) {
@@ -47,7 +47,7 @@ function useFirestore(collectionString, condition) {
     });
 
     return () => unsubscribe();
-  }, [collectionString, condition])
+  }, [collectionName, condition])
 
   return documents;
 }

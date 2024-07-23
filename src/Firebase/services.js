@@ -2,10 +2,10 @@ import React from 'react';
 import firebaseApp, { db } from './config';
 import { query, collection, serverTimestamp, addDoc } from "firebase/firestore";
 
-export const addDocument = async (collectionString, data) => {
+export const addDocument = async (collectionName, data) => {
   /*---- Firebase versions before 10.x ------*/
   // const query = db.collection(collection);
-  // const queryData = query(collection(db, collectionString));
+  // const queryData = query(collection(db, collectionName));
   // queryData.add({
   //   ...data,
   //   createdAt: firebaseApp.firestore.FieldValue.serverTimestamp()
@@ -13,7 +13,7 @@ export const addDocument = async (collectionString, data) => {
 
   /*--------- Firebase version from 10.x and later. ----------*/
   try {
-    const CollectionItem = collection(db, collectionString);
+    const CollectionItem = collection(db, collectionName);
     await addDoc(CollectionItem, {
       ...data,
       createdAt: serverTimestamp()

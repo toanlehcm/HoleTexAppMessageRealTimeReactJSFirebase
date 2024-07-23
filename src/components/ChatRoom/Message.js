@@ -49,7 +49,6 @@ function Message({ text, displayName, createAt, photoURL }) {
       <div>
         <Typography.Text className='content'>{text}</Typography.Text>
       </div>
-
     </WrapperStyled>
   );
 }

@@ -119,18 +119,31 @@ function ChatWindow() {
             </div>
 
             <ButtonGroupStyled>
-              <Button icon={<UserAddOutlined />} type='text'>Mời</Button>
+              <Button icon={<UserAddOutlined />} type='text' onClick={() => setIsInviteMemberVisible(true)}>Mời</Button>
+
               <Avatar.Group size='small' maxCount={2}>
-                <Tooltip title="A"><Avatar>A</Avatar></Tooltip>
-                <Tooltip title="B"><Avatar>B</Avatar></Tooltip>
-                <Tooltip title="C"><Avatar>C</Avatar></Tooltip>
-                <Tooltip title="D"><Avatar>D</Avatar></Tooltip>
+                {members.map((member) => (
+                  <Tooltip title={member.displayName} key={member.id}>
+                    <Avatar src={member.photoURL}>
+                      {member.photoURL ? '' : member.displayName?.chartAt(0).toUpperCase()}
+                    </Avatar>
+                  </Tooltip>
+                ))}
               </Avatar.Group>
             </ButtonGroupStyled>
           </HeaderStyled>
 
           <ContentStyled>
-            <MessageListStyled></MessageListStyled>
+            <MessageListStyled ref={messageListRef}>
+              {messages.map((message) => (
+                <Message key={message.id}
+                  text={message.text}
+                  photoURL={message.photoURL}
+                  displayName={message.displayName}
+                  createdAt={message.createdAt}
+                />
+              ))}
+            </MessageListStyled>
 
             <FormStyled form={form}>
               <Form.Item name='message'>

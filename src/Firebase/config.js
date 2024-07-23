@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth"; //FacebookAuthProvider
-import { getFirestore } from "firebase/firestore";
+import { getAuth, connectAuthEmulator } from "firebase/auth"; //FacebookAuthProvider
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -23,6 +23,12 @@ const analytics = getAnalytics(firebaseApp);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 // const fbProvider = new FacebookAuthProvider();
+
+if (window.location.hostname === 'localhost') {
+  console.log('Running in emulator mode. Do not use with production credentials.');
+  connectAuthEmulator(auth, "http://localhost:9099");
+  connectFirestoreEmulator(db, "localhost", 8080);
+}
 
 // Adding necessary scopes (permissions)
 // fbProvider.addScope('email');

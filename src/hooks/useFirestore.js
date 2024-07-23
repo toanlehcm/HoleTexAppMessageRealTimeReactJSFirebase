@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../Firebase/config';
-import { query, collection, orderBy, where, onSnapshot } from "firebase/firestore";
+import { query, collection, orderBy, where, onSnapshot, getDocs } from "firebase/firestore";
 
 function useFirestore(collectionName, condition) {
   const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
-    let collectionRef = query(collection(db, collectionName), orderBy('createAt'));
+    let collectionRef = collection(db, collectionName);
+    let queryWhere;
 
     if (condition) {
       if (!condition.compareValue || !condition.compareValue.length) {
@@ -15,11 +16,16 @@ function useFirestore(collectionName, condition) {
         return;
       }
 
-      collectionRef = query(
+      queryWhere = query(
         collectionRef,
-        where(condition.fieldName, condition.operator, condition.compareValue)
+        where(condition.fieldName, condition.operator, condition.compareValue),
+        orderBy('createAt')
       );
+    } else {
+      queryWhere = query(collectionRef, orderBy('createAt'));
     }
+
+    const querySnapshot = getDocs(queryWhere);
 
     // Set up the listener
     const unsubscribe = onSnapshot(collectionRef, (snapshot) => {

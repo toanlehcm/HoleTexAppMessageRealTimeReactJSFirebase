@@ -13,7 +13,6 @@ function AuthProvider({ children }) {
   // When login successful, this function will be called.
   const navigate = useNavigate();
 
-
   // Listen event login successful or fail.
   useEffect(() => {
     // Assign unsubscribe to clear event.
@@ -25,6 +24,7 @@ function AuthProvider({ children }) {
         navigate('/');
         return;
       }
+
       //Reset user data.
       setUserData({})
       setIsLoading(false);

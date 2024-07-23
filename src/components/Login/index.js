@@ -13,17 +13,17 @@ const googleProvider = new GoogleAuthProvider();
 
 export default function Login() {
 
-  const handleFBLogin = async (provider) => {
+  const handleLogin = async (provider) => {
     try {
-      const { additionalUserInfo, user } = await signInWithPopup(auth, provider);
-
-      if (additionalUserInfo?.isNewUser) {
+      // const data = await signInWithPopup(auth, provider);
+      const { additionalUserInfo, providerId, user } = await signInWithPopup(auth, provider);
+      if (providerId && user) {
         addDocument('users', {
           displayName: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
           uid: user.uid,
-          providerId: additionalUserInfo.providerId,
+          providerId: providerId,
           keywords: generateKeywords(user.displayName?.toLowerCase())
         });
       }
@@ -46,8 +46,8 @@ export default function Login() {
       <Row justify={'center'} style={{ height: 800 }}>
         <Col span={8}>
           <Title style={{ textAlign: 'center' }} level={3}>Fun Chat</Title>
-          <Button style={{ width: '100%', marginBottom: 5 }} onClick={() => handleFBLogin(googleProvider)}>Login by Google</Button>
-          <Button style={{ width: '100%' }} onClick={() => handleFBLogin(fbProvider)}>Login by Facebook</Button>
+          <Button style={{ width: '100%', marginBottom: 5 }} onClick={() => handleLogin(googleProvider)}>Login by Google</Button>
+          <Button style={{ width: '100%' }} onClick={() => handleLogin(fbProvider)}>Login by Facebook</Button>
         </Col>
       </Row>
     </div >

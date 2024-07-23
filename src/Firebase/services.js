@@ -1,15 +1,27 @@
 import React from 'react';
 import firebaseApp, { db } from './config';
-import { query, collection } from "firebase/firestore";
+import { query, collection, serverTimestamp, addDoc } from "firebase/firestore";
 
-export const addDocument = (collectionString, data) => {
+export const addDocument = async (collectionString, data) => {
+  /*---- Firebase versions before 10.x ------*/
   // const query = db.collection(collection);
-  const queryData = query(collection(db, collectionString));
+  // const queryData = query(collection(db, collectionString));
+  // queryData.add({
+  //   ...data,
+  //   createdAt: firebaseApp.firestore.FieldValue.serverTimestamp()
+  // });
 
-  queryData.add({
-    ...data,
-    createdAt: firebaseApp.firestore.FieldValue.serverTimestamp()
-  });
+  /*--------- Firebase version from 10.x and later. ----------*/
+  try {
+    const CollectionItem = collection(db, collectionString);
+    await addDoc(CollectionItem, {
+      ...data,
+      createdAt: serverTimestamp()
+    });
+    console.log("Document added successfully");
+  } catch (error) {
+    console.error("Error adding document: ", error);
+  }
 };
 
 // Crate keyword for displayname, using fo search.

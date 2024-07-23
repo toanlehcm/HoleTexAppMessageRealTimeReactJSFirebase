@@ -13,8 +13,8 @@ export const addDocument = async (collectionName, data) => {
 
   /*--------- Firebase version from 10.x and later. ----------*/
   try {
-    const CollectionItem = collection(db, collectionName);
-    await addDoc(CollectionItem, {
+    const collectionItem = collection(db, collectionName);
+    await addDoc(collectionItem, {
       ...data,
       createdAt: serverTimestamp()
     });

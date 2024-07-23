@@ -15,26 +15,11 @@ function useFirestore(collectionName, condition) {
         return;
       }
 
-      // collectionRef = collectionRef.where(
-      //   condition.fieldName,
-      //   condition.operator,
-      //   condition.compareValue
-      // );
-
       collectionRef = query(
         collectionRef,
         where(condition.fieldName, condition.operator, condition.compareValue)
       );
     }
-
-    // const unsubscribe = collectionRef.onSnapshot((snapshot) => {
-    //   const documnets = snapshot.docs.map((doc) => ({
-    //     ...doc.data(),
-    //     id: doc.id
-    //   }));
-
-    //   setDocuments(documnets);
-    // });
 
     // Set up the listener
     const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
@@ -42,6 +27,10 @@ function useFirestore(collectionName, condition) {
         ...doc.data(),
         id: doc.id,
       }));
+
+      // console.log('snapshot', snapshot);
+      // console.log('snapshot.docs', snapshot.docs);
+      // console.log('documents', documents);
 
       setDocuments(documents);
     });

@@ -1,10 +1,12 @@
 import React from 'react';
 import firebaseApp, { db } from './config';
+import { query, collection } from "firebase/firestore";
 
-export const addDocument = (collection, data) => {
-  const query = db.collection(collection);
+export const addDocument = (collectionString, data) => {
+  // const query = db.collection(collection);
+  const queryData = query(collection(db, collectionString));
 
-  query.add({
+  queryData.add({
     ...data,
     createdAt: firebaseApp.firestore.FieldValue.serverTimestamp()
   });

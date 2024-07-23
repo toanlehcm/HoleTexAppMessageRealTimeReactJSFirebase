@@ -1,9 +1,12 @@
-import React, { useContext, useMemo, useRef } from 'react';
+import React, { useContext, useEffect, useMemo, useRef } from 'react';
 import { UserAddOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { Button, Tooltip, Avatar, Form, Input, Alert } from 'antd';
 import Message from './Message';
 import { AuthContext } from '../../Context/AuthProvider';
+import { AppContext } from '../../Context/AppProvider';
+import { addDocument } from '../../Firebase/services';
+import useFirestore from '../../hooks/useFirestore';
 
 const WrapperStyled = styled.div`
   height: 100vh;
@@ -68,6 +71,7 @@ const FormStyled = styled(Form)`
 `;
 
 function ChatWindow() {
+  const { selectedRoom, members, setIsInviteMemberVisible } = useContext(AppContext);
   const { userData: { uid, photoUrl, displayName } } = useContext(AuthContext)
   const [inputValue, setInputValue] = React.useState('')
   const [form] = Form.useForm();
@@ -78,51 +82,80 @@ function ChatWindow() {
     setInputValue(e.target.value)
   }
 
-  const handleOnSubmit = () => { };
+  const handleOnSubmit = () => {
+    addDocument('message', { text: inputValue, uid, photoUrl, roomId: selectedRoom.id, displayName });
+
+    form.resetFields(['message']);
+
+    // Focus to input again after submit.
+    if (inputRef?.current) {
+      setTimeout(() => { inputRef.current.focus() });
+    }
+  };
 
   const condition = useMemo(() => ({
     fieldName: 'roomId',
     operator: '==',
-    compareValue: '123'
-  }), [])
+    compareValue: selectedRoom.id
+  }), [selectedRoom.id])
 
-  //  const messages = useFireStore('messages', condition);
+  const messages = useFirestore('messages', condition);
+
+  useEffect(() => {
+    // Scroll to bottom after message changed.
+    if (messageListRef?.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight + 50;
+    }
+  }, [messages])
 
   return (
     <WrapperStyled>
-      <HeaderStyled>
-        <div className='header__info'>
-          <p className='header__title'>Room 1</p>
-          <span className='header__description'>Mô tả: 1</span>
-        </div>
+      {selectedRoom.id ? (
+        <>
+          <HeaderStyled>
+            <div className='header__info'>
+              <p className='header__title'>{selectedRoom.name}</p>
+              <span className='header__description'>{selectedRoom.description}</span>
+            </div>
 
-        <ButtonGroupStyled>
-          <Button icon={<UserAddOutlined />} type='text'>Mời</Button>
-          <Avatar.Group size='small' maxCount={2}>
-            <Tooltip title="A"><Avatar>A</Avatar></Tooltip>
-            <Tooltip title="B"><Avatar>B</Avatar></Tooltip>
-            <Tooltip title="C"><Avatar>C</Avatar></Tooltip>
-            <Tooltip title="D"><Avatar>D</Avatar></Tooltip>
-          </Avatar.Group>
-        </ButtonGroupStyled>
-      </HeaderStyled>
+            <ButtonGroupStyled>
+              <Button icon={<UserAddOutlined />} type='text'>Mời</Button>
+              <Avatar.Group size='small' maxCount={2}>
+                <Tooltip title="A"><Avatar>A</Avatar></Tooltip>
+                <Tooltip title="B"><Avatar>B</Avatar></Tooltip>
+                <Tooltip title="C"><Avatar>C</Avatar></Tooltip>
+                <Tooltip title="D"><Avatar>D</Avatar></Tooltip>
+              </Avatar.Group>
+            </ButtonGroupStyled>
+          </HeaderStyled>
 
-      <ContentStyled>
-        <MessageListStyled></MessageListStyled>
+          <ContentStyled>
+            <MessageListStyled></MessageListStyled>
 
-        <FormStyled form={form}>
-          <Form.Item name='message'>
-            <Input ref={inputRef}
-              onChange={handleInputChange}
-              onPressEnter={handleOnSubmit}
-              placeholder='Nhập tin nhắn...'
-              bordered={false}
-              autoComplete='off' />
-          </Form.Item>
+            <FormStyled form={form}>
+              <Form.Item name='message'>
+                <Input ref={inputRef}
+                  onChange={handleInputChange}
+                  onPressEnter={handleOnSubmit}
+                  placeholder='Nhập tin nhắn...'
+                  bordered={false}
+                  autoComplete='off' />
+              </Form.Item>
 
-          <Button type='primary' onClick={handleOnSubmit} >Gửi</Button>
-        </FormStyled>
-      </ContentStyled>
+              <Button type='primary' onClick={handleOnSubmit} >Gửi</Button>
+            </FormStyled>
+          </ContentStyled>
+        </>
+      ) : (
+        <Alert
+          message='Hãy chọn phòng'
+          type='info'
+          showIcon
+          style={{ margin: 5 }}
+          closeable
+        />
+      )}
+
     </WrapperStyled >
   );
 }

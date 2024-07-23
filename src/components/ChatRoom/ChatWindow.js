@@ -83,7 +83,7 @@ function ChatWindow() {
   }
 
   const handleOnSubmit = () => {
-    addDocument('message', { text: inputValue, uid, photoURL, roomId: selectedRoom.id, displayName });
+    addDocument('messages', { text: inputValue, uid, photoURL, roomId: selectedRoom.id, displayName });
 
     form.resetFields(['message']);
 

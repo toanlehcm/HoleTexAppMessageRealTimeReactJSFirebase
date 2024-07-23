@@ -30,7 +30,7 @@ function AddRoomModal(props) {
     <div>
       <Modal
         title='Tạo phòng'
-        visible={isAddRoomVisible}
+        open={isAddRoomVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >

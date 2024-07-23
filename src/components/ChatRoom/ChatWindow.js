@@ -121,7 +121,7 @@ function ChatWindow() {
             <ButtonGroupStyled>
               <Button icon={<UserAddOutlined />} type='text' onClick={() => setIsInviteMemberVisible(true)}>Mời</Button>
 
-              <Avatar.Group size='small' maxCount={2}>
+              <Avatar.Group size='small' max={{ count: 2 }}>
                 {members.map((member) => (
                   <Tooltip title={member.displayName} key={member.id}>
                     <Avatar src={member.photoURL}>
@@ -151,7 +151,7 @@ function ChatWindow() {
                   onChange={handleInputChange}
                   onPressEnter={handleOnSubmit}
                   placeholder='Nhập tin nhắn...'
-                  bordered={false}
+                  variant={false}
                   autoComplete='off' />
               </Form.Item>
 

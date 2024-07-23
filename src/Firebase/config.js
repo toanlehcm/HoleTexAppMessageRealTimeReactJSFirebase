@@ -25,7 +25,7 @@ const db = getFirestore(firebaseApp);
 // const fbProvider = new FacebookAuthProvider();
 
 if (window.location.hostname === 'localhost') {
-  console.log('Running in emulator mode. Do not use with production credentials.');
+  // console.log('Running in emulator mode. Do not use with production credentials.');
   connectAuthEmulator(auth, "http://localhost:9099");
   connectFirestoreEmulator(db, "localhost", 8080);
 }

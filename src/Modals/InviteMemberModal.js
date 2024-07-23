@@ -16,9 +16,11 @@ function DebounceSelect({
 
   const debounceFetcher = useMemo(() => {
     const loadOptions = (value) => {
+      // Reset previous options.
       setOptions([]);
       setFetching(true);
 
+      // Promise call API, return new options.
       fetchOptions(value, curMembers).then((newOptions) => {
         setOptions(newOptions);
         setFetching(false);
@@ -110,7 +112,7 @@ function InviteMemberModal(props) {
     <div>
       <Modal
         title='Mời thêm thành viên'
-        visible={isInviteMemberVisible}
+        open={isInviteMemberVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose={true}

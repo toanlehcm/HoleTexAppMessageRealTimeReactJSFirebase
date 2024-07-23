@@ -20,7 +20,7 @@ function AddRoomModal(props) {
   }
 
   const handleCancel = () => {
-    //  Reset form value
+    //  Reset form value.
     form.resetFields();
 
     setIsAddRoomVisible(false);

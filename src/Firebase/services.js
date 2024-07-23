@@ -45,17 +45,15 @@ export const generateKeywords = (displayName) => {
     flagArray[i] = false;
   }
 
-  const createkeywords = (name) => {
+  const createKeywords = (name) => {
     const arrName = [];
     let curName = '';
-
-    name.split().forEach((letter) => {
+    name.split('').forEach((letter) => {
       curName += letter;
       arrName.push(curName);
     });
-
     return arrName;
-  }
+  };
 
   function findPermutation(k) {
     for (let i = 0; i < length; i++) {
@@ -76,9 +74,9 @@ export const generateKeywords = (displayName) => {
   findPermutation(0); // goi ham de quy
 
   const keywords = stringArray.reduce((acc, cur) => {
-    const words = createkeywords(cur);
+    const words = createKeywords(cur);
     return [...acc, ...words];
   }, []);
 
   return keywords;
-}
+};

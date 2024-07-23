@@ -125,7 +125,7 @@ function ChatWindow() {
                 {members.map((member) => (
                   <Tooltip title={member.displayName} key={member.id}>
                     <Avatar src={member.photoURL}>
-                      {member.photoURL ? '' : member.displayName?.chartAt(0).toUpperCase()}
+                      {member.photoURL ? '' : member.displayName?.charAt(0)?.toUpperCase()}
                     </Avatar>
                   </Tooltip>
                 ))}

@@ -48,7 +48,7 @@ function DebounceSelect({
       {options.map((option) => (
         <Select.Option key={option.value} value={option.value} title={option.label}>
           <Avatar size='small' src={option.photoURL}>
-            {option.photoURL ? '' : option.label.charAt(0).toUpperCase()}
+            {option.photoURL ? '' : option.label?.charAt(0)?.toUpperCase()}
           </Avatar>
           {`${option.label}`}
         </Select.Option>
@@ -62,7 +62,7 @@ async function fetchUserList(search, curMembers) {
     collection(db, 'users'),
     where('keywords', 'array-contains', search?.toLowerCase()),
     orderBy('displayName'),
-    limit(20)
+    limit(20) // Limit to 20 results.
   );
 
   const snapshot = await getDocs(q);
